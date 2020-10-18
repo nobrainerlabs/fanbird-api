@@ -1,8 +1,7 @@
 import {
   User,
   UserChoosePasswordDto,
-  UserSsoGoogleDto,
-  UserSsoFacebookDto,
+  UserSsoDto,
   UserSource,
 } from './../user/user.entity';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -67,7 +66,7 @@ export class AuthService {
     });
 
     if (!user) {
-      const dto = new UserSsoGoogleDto();
+      const dto = new UserSsoDto();
       dto.source = UserSource.google;
       dto.email = req.user.email;
       dto.firstName = req.user.firstName;
@@ -95,8 +94,35 @@ export class AuthService {
     });
 
     if (!user) {
-      const dto = new UserSsoFacebookDto();
+      const dto = new UserSsoDto();
       dto.source = UserSource.facebook;
+      dto.email = req.user.email;
+      dto.firstName = req.user.firstName;
+      dto.lastName = req.user.lastName;
+      user = await this.userService.create(dto);
+    }
+
+    const accessToken = await this.generateAccessToken(user);
+    user = await this.userService.loggedIn(user);
+    return {
+      user,
+      accessToken,
+      expiresIn: process.env.JWT_EXPIRATION,
+    };
+  }
+
+  async loginInstagram(req): Promise<UserTokenDto> {
+    if (!req.user) {
+      throw new InternalServerErrorException('error during instagram sso');
+    }
+
+    let user = await this.userService.findOne({
+      where: { email: req.user.email },
+    });
+
+    if (!user) {
+      const dto = new UserSsoDto();
+      dto.source = UserSource.instagram;
       dto.email = req.user.email;
       dto.firstName = req.user.firstName;
       dto.lastName = req.user.lastName;

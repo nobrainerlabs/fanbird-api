@@ -13,7 +13,11 @@ async function bootstrap() {
     .setTitle('Swagger')
     .setDescription('API Documentation')
     .setVersion('0.2')
-    .setContact('nobrainerlabs.com', 'https://github.com/nobrainerlabs/mvp-starterkit-api', 'nobrainerlabs@gmail.com')
+    .setContact(
+      'nobrainerlabs.com',
+      'https://github.com/nobrainerlabs/mvp-starterkit-api',
+      'nobrainerlabs@gmail.com',
+    )
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
@@ -21,6 +25,8 @@ async function bootstrap() {
 
   await app.listen(process.env.VIRTUAL_PORT);
 
-  Logger.log(`app listening on: http://${process.env.VIRTUAL_HOST} on ${process.env.NODE_ENV} mode`)
+  Logger.log(
+    `app listening on: http://${process.env.VIRTUAL_HOST} on ${process.env.NODE_ENV} mode`,
+  );
 }
 bootstrap();

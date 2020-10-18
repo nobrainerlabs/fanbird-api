@@ -88,4 +88,23 @@ export class AuthController {
       res.redirect(`${process.env.WEB_SSO_FAIL_URL}`);
     }
   }
+
+  @Get('instagram')
+  @UseGuards(AuthGuard('instagram'))
+  async instagramAuth(@Req() req): Promise<void> {
+    return;
+  }
+
+  @Get('instagram/callback')
+  @UseGuards(AuthGuard('instagram'))
+  async instagramAuthRedirect(@Req() req, @Res() res) {
+    try {
+      const userToken = await this.authService.loginInstagram(req);
+      res.redirect(
+        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${userToken.accessToken}`,
+      );
+    } catch (err) {
+      res.redirect(`${process.env.WEB_SSO_FAIL_URL}`);
+    }
+  }
 }

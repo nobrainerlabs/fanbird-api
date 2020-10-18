@@ -1,5 +1,6 @@
 import { FacebookStrategy } from './strategies/facebook.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { InstagramStrategy } from './strategies/instagram.strategy';
 import { AuthController } from './auth.controller';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
@@ -26,6 +27,7 @@ import { LocalStrategy } from './strategies/local.strategy';
     JwtStrategy,
     GoogleStrategy,
     FacebookStrategy,
+    InstagramStrategy,
   ],
   exports: [AuthService],
 })

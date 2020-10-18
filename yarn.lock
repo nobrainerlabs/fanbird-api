@@ -6688,6 +6688,13 @@ passport-google-oauth20@^2.0.0:
   dependencies:
     passport-oauth2 "1.x.x"
 
+passport-instagram@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/passport-instagram/-/passport-instagram-1.0.0.tgz#eaa2b42d11473bcfda5190f26234cf485f645656"
+  integrity sha1-6qK0LRFHO8/aUZDyYjTPSF9kVlY=
+  dependencies:
+    passport-oauth2 "1.x.x"
+
 passport-jwt@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/passport-jwt/-/passport-jwt-4.0.0.tgz#7f0be7ba942e28b9f5d22c2ebbb8ce96ef7cf065"

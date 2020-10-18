@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  IMAGE_NAME: mlg-api
+
+jobs:
+  deploy:
+    #needs: push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remote SSH Commands
+        uses: appleboy/ssh-action@master
+        with:
+          script: |
+            cd sites/fanbird-api
+            git pull
+            cp ../.env ./.env
+            docker-compose build api
+            docker-compose up -d
+          host: ${{ secrets.HOST }}
+          username: root
+          key: ${{ secrets.PRIVATE_KEY }}

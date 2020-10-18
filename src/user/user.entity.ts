@@ -17,6 +17,7 @@ export enum UserSource {
   facebook = 'facebook',
   google = 'google',
   email = 'email',
+  instagram = 'instagram',
 }
 
 @Entity()
@@ -167,6 +168,24 @@ export class UserSsoGoogleDto {
 }
 
 export class UserSsoFacebookDto {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  source: UserSource;
+
+  @IsOptional()
+  picture: string;
+
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsNotEmpty()
+  lastName: string;
+}
+
+export class UserSsoDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
