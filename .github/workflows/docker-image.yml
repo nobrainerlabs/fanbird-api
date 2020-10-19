@@ -20,9 +20,9 @@ jobs:
           script: |
             cd sites/fanbird-api
             git pull
-            cp ../.env ./.env
-            docker-compose build api
-            docker-compose up -d
+            cp ../.env.production ./.env
+            docker-compose build
+            docker-compose up -f docker-compose.production.yml -d
           host: ${{ secrets.HOST }}
           username: root
           key: ${{ secrets.PRIVATE_KEY }}
