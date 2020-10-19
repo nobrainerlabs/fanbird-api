@@ -20,9 +20,8 @@ jobs:
           script: |
             cd sites/fanbird-api
             git pull
-            cp ../.env.production ./.env
             docker-compose build
             docker-compose up -f docker-compose.production.yml -d
           host: ec2-54-215-196-192.us-west-1.compute.amazonaws.com
-          username: root
+          username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
