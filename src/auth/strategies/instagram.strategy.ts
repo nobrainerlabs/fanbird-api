@@ -9,8 +9,8 @@ export class InstagramStrategy extends PassportStrategy(Strategy, 'instagram') {
       clientID: process.env.INSTAGRAM_APP_ID,
       clientSecret: process.env.INSTAGRAM_APP_SECRET,
       callbackURL: process.env.INSTAGRAM_CALLBACK_URL,
-      scope: 'email',
-      profileFields: ['emails', 'name'],
+      scope: 'user_profile,user_media',
+      profileFields: ['id', 'username'],
     });
   }
 
@@ -20,12 +20,11 @@ export class InstagramStrategy extends PassportStrategy(Strategy, 'instagram') {
     profile: Profile,
     done: (err: any, user: any, info?: any) => void,
   ): Promise<any> {
-    const { name, emails } = profile;
-
+    console.log('validate insta', profile);
     const user = {
-      email: emails[0].value,
-      firstName: name.givenName,
-      lastName: name.familyName,
+      email: 'insta@gram.com',
+      firstName: 'jsa',
+      lastName: 'sef',
       accessToken,
     };
     done(null, user);

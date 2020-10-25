@@ -73,4 +73,18 @@ export class UserController {
     id = id === 'me' ? req.user.id : id;
     return await this.userService.remove(id as number);
   }
+
+  @Post('email')
+  public async checkEmail(@Body() body: { email: string }) {
+    const email = body.email;
+    const user = await this.userService.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      return { found: 0 };
+    }
+    return { found: 1 };
+  }
 }

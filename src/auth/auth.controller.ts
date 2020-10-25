@@ -4,7 +4,10 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpService,
+  Param,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -20,7 +23,10 @@ import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private httpService: HttpService,
+  ) {}
 
   @Post('login')
   @HttpCode(200)
@@ -89,6 +95,30 @@ export class AuthController {
     }
   }
 
+  @Post('instagram/exchange-code')
+  async instagramExchangeCode(@Body() body) {
+    const payload = {
+      client_id: process.env.INSTAGRAM_APP_ID,
+      client_secret: process.env.INSTAGRAM_APP_SECRET,
+      code: body.code,
+      grant_type: 'authorization_code',
+      redirect_uri: 'https://ba0fe6473e0a.ngrok.io/mission',
+    };
+    console.log('pa', payload);
+    let res;
+
+    try {
+      res = await this.httpService
+        .post('https://api.instagram.com/oauth/access_token', payload)
+        // .post('https://fanbird.free.beeceptor.com', payload)
+        .toPromise();
+    } catch (error) {
+      console.log(Object.keys(error), error.message);
+    }
+    console.log('data', res.data);
+    return { data: res.data };
+  }
+
   @Get('instagram')
   @UseGuards(AuthGuard('instagram'))
   async instagramAuth(@Req() req): Promise<void> {
@@ -98,8 +128,10 @@ export class AuthController {
   @Get('instagram/callback')
   @UseGuards(AuthGuard('instagram'))
   async instagramAuthRedirect(@Req() req, @Res() res) {
+    console.log('prep redirect');
     try {
       const userToken = await this.authService.loginInstagram(req);
+      console.log('got token', userToken);
       res.redirect(
         `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${userToken.accessToken}`,
       );

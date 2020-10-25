@@ -2,7 +2,7 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { InstagramStrategy } from './strategies/instagram.strategy';
 import { AuthController } from './auth.controller';
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
@@ -19,6 +19,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },
     }),
+    HttpModule,
   ],
   controllers: [AuthController],
   providers: [
