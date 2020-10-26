@@ -34,7 +34,7 @@ export class UserController {
   @Roles('admin', '$owner')
   @Get(':id([0-9]+|me)')
   public async findById(
-    @Param('id', ParseIntPipe) id: number | string,
+    @Param('id') id: number | string,
     @Req() req,
   ) {
     id = id === 'me' ? req.user.id : id;
