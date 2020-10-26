@@ -1,3 +1,4 @@
+import { MissionModule } from './mission/mission.module';
 import { AccessControlModule } from 'nest-access-control';
 import { CommandModule } from 'nestjs-command';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
@@ -46,6 +47,7 @@ import { UserModule } from './user/user.module';
     CommandModule,
     AuthModule,
     CrudModule,
+    MissionModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserCommand, CrudCommand],
