@@ -33,10 +33,7 @@ export class UserController {
 
   @Roles('admin', '$owner')
   @Get(':id([0-9]+|me)')
-  public async findById(
-    @Param('id') id: number | string,
-    @Req() req,
-  ) {
+  public async findById(@Param('id') id: number | string, @Req() req) {
     id = id === 'me' ? req.user.id : id;
     const user = await this.userService.findOne(id);
     if (!user) {
@@ -80,6 +77,7 @@ export class UserController {
     const user = await this.userService.findOne({
       where: {
         email,
+        source: 'email',
       },
     });
     if (!user) {
