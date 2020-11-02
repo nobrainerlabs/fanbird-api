@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
@@ -77,12 +78,12 @@ export class UserController {
     const user = await this.userService.findOne({
       where: {
         email,
-        source: 'email',
       },
     });
     if (!user) {
       return { found: 0 };
     }
-    return { found: 1 };
+
+    return { found: 1, source: user.source };
   }
 }

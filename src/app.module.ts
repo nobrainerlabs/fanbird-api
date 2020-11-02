@@ -1,3 +1,4 @@
+import { InstagramModule } from './instagram/crud.module';
 import { MissionModule } from './mission/mission.module';
 import { AccessControlModule } from 'nest-access-control';
 import { CommandModule } from 'nestjs-command';
@@ -48,6 +49,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     CrudModule,
     MissionModule,
+    InstagramModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserCommand, CrudCommand],

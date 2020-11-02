@@ -11,6 +11,7 @@ import {
   UnauthorizedException,
   NotFoundException,
   InternalServerErrorException,
+  HttpService,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
@@ -28,6 +29,7 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private mailerService: MailerService,
+    private httpService: HttpService,
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
