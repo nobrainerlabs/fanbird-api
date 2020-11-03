@@ -23,7 +23,7 @@ services:
     ports:
       - ${LOCAL_PORT}:${VIRTUAL_PORT}
     command: bash -c "yarn && yarn build && yarn start:prod"
-    env_file: ./.env.production
+    env_file: ./.env
     network_mode: bridge
     tty: true
     links:

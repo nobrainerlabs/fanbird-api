@@ -69,7 +69,7 @@ export class AuthController {
     try {
       const userToken = await this.authService.loginGoogle(req);
       res.redirect(
-        `${process.env.WEB_SSO_SUCCESS_URL}?jae=1&accessToken=${userToken.accessToken}`,
+        `${process.env.WEB_BASE_URL}/sso?accessToken=${userToken.accessToken}`,
       );
     } catch (err) {
       res.redirect(`${process.env.WEB_SSO_FAIL_URL}`);
