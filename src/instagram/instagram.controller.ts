@@ -40,11 +40,13 @@ export class InstagramController {
     description: 'Exchange auth code for access token',
   })
   async getAccessToken(@Query() dto) {
-    const res = await this.instagramService.getAccessToken(dto.code, dto.state);
-    const data = {
-      accessToken: res.data.access_token,
-      userId: res.data.user_id,
-    };
+    const data = await this.instagramService.getAccessToken(
+      dto.code,
+      dto.state,
+    );
+
+    console.log('the data from getAcecsToken', data);
+
     return `<html><body><script>window.opener.postMessage(${JSON.stringify(
       data,
     )}, "*"); window.close();</script></body></html>`;

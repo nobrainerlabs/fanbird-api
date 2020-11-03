@@ -39,13 +39,22 @@ export class InstagramService {
           'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
         },
       };
-      return await this.httpService
+      const resAccessToken = await this.httpService
         .post(
           `https://api.instagram.com/oauth/access_token`,
           qs.stringify(payload),
           config,
         )
         .toPromise();
+
+      const urlUser = `https://graph.instagram.com/me?fields=id,username&access_token=${resAccessToken.data.access_token}`;
+
+      const resUser = await this.httpService.get(urlUser, config).toPromise();
+
+      return {
+        accessToken: resAccessToken.data.access_token,
+        userId: resUser.data.id,
+      };
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
@@ -62,15 +71,19 @@ export class InstagramService {
 
   async hunt(userId, accessToken, mention) {
     const url = `https://graph.instagram.com/${userId}/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=${accessToken}`;
-
+    console.log('hitting url', userId, accessToken, url);
     try {
       const res = await this.httpService.get(url).toPromise();
+      console.log('the res', res.data);
       const found = res.data.data.find((post) => {
-        const comment = post.caption.toLowerCase();
-        return comment.includes(mention.toLowerCase());
+        if (post && post.caption) {
+          const comment = post.caption.toLowerCase();
+          return comment.includes(mention.toLowerCase());
+        }
       });
       return { found };
     } catch (err) {
+      console.log('there was error', err.message);
       throw new InternalServerErrorException(err);
     }
   }
