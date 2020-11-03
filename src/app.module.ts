@@ -1,3 +1,4 @@
+import { SubscriberModule } from './subscriber/subscriber.module';
 import { InstagramModule } from './instagram/crud.module';
 import { MissionModule } from './mission/mission.module';
 import { AccessControlModule } from 'nest-access-control';
@@ -50,6 +51,7 @@ import { UserModule } from './user/user.module';
     CrudModule,
     MissionModule,
     InstagramModule,
+    SubscriberModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserCommand, CrudCommand],
