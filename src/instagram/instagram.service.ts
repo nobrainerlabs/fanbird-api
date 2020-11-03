@@ -19,7 +19,7 @@ export class InstagramService {
   constructor(private httpService: HttpService) {}
 
   async getCode(response: express.Response, params) {
-    const state = 'jaequery';
+    const state = 'something';
     const url = `https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTAGRAM_APP_ID}&redirect_uri=${process.env.INSTAGRAM_CALLBACK_URL}&scope=user_profile,user_media&response_type=code&state=${state}`;
     response.redirect(url);
   }
