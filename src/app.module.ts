@@ -1,3 +1,4 @@
+import { MockService } from './mock/mock.service';
 import { SubscriberModule } from './subscriber/subscriber.module';
 import { InstagramModule } from './instagram/crud.module';
 import { MissionModule } from './mission/mission.module';
@@ -37,6 +38,7 @@ import { UserModule } from './user/user.module';
       logging: true,
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),
+      keepConnectionAlive: true,
     }),
     MailerModule.forRoot({
       transport: process.env.SMTP_TRANSPORT, // SMTP_TRANSPORT=smtps://nobrainerlabs@gmail.com:secure1234@smtp.gmail.com
@@ -54,6 +56,6 @@ import { UserModule } from './user/user.module';
     SubscriberModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserCommand, CrudCommand],
+  providers: [AppService, UserCommand, CrudCommand, MockService],
 })
 export class AppModule {}

@@ -18,8 +18,8 @@ export class Mission {
   @Column()
   name: string;
 
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  description?: string;
 
   @Column()
   type: string;
@@ -28,10 +28,10 @@ export class Mission {
   points: number;
 
   @Column({ type: 'jsonb', default: {} })
-  meta: string;
+  meta: object;
 
   @Column({ type: 'jsonb', default: {} })
-  media: string;
+  media: object;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -43,6 +43,15 @@ export class Mission {
 export class MissionCreateDto {
   @IsNotEmpty()
   name: string;
+  description: string;
+  @IsNotEmpty()
+  type: string;
+  @IsNotEmpty()
+  points: number;
+  @IsNotEmpty()
+  meta: object;
+  @IsNotEmpty()
+  media: object;
 }
 
 export class MissionUpdateDto {
