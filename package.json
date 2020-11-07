@@ -21,8 +21,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "task": "npx nestjs-command",
-    "docker": "docker-compose exec api",
-    "crud": "yarn docker yarn task crud:create"
+    "crud": "yarn task crud:create",
+    "mock": "yarn test mock",
+    "docker": "docker-compose exec api"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.4.2",
