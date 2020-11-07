@@ -19,7 +19,7 @@ export class Mission {
   name: string;
 
   @Column()
-  instruction: string;
+  description: string;
 
   @Column()
   type: string;
