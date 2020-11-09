@@ -20,6 +20,7 @@ import {
   UserUpdateDto,
   UserSource,
 } from './user.entity';
+import { UserMission } from '../userMission/userMission.entity';
 
 @Injectable()
 export class UserService {
@@ -67,7 +68,7 @@ export class UserService {
     return this.create(dto);
   }
 
-  async create(dto: Partial<User>): Promise<User> {
+  public async create(dto: Partial<User>): Promise<User> {
     console.log('creating', dto);
     try {
       const user = await this.userRepository.save(dto);
@@ -111,6 +112,20 @@ export class UserService {
       .catch((e) => {
         Logger.error('error sending welcome email', e);
       });
+  }
+
+  async completeMission(userId: number, missionId: number) {
+    const user = await this.findOne({ where: { id: userId } });
+    const mission = await this.findOne({ where: { id: missionId } });
+    if (user) {
+      const userMission = new UserMission();
+      userMission.status = 'COMPLETED';
+      userMission.missionId = missionId;
+      userMission.userId = userId;
+      user.userMissions = [...user.userMissions, userMission];
+    }
+    return this.userRepository.save(user);
+    return 1;
   }
 
   /**

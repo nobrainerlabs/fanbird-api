@@ -9,6 +9,7 @@ export class MockService {
   ) {}
 
   async mockUsers() {
+    console.log('runnign micok users');
     const users = [
       { email: 'user@test.com', password: 'asdfasdf' },
       { email: 'user2@test.com', password: 'asdfasdf' },
@@ -16,7 +17,10 @@ export class MockService {
     for (const user of users) {
       try {
         const newUser = await this.userService.create(user);
-      } catch (err) {}
+        console.log('new user', newUser);
+      } catch (err) {
+        console.error('some error', err);
+      }
     }
   }
 
@@ -24,7 +28,10 @@ export class MockService {
     for (const mission of missions) {
       try {
         const newMission = await this.missionService.create(mission);
-      } catch (err) {}
+        console.log('new mission', newMission);
+      } catch (err) {
+        console.error('err', err);
+      }
     }
   }
 }
