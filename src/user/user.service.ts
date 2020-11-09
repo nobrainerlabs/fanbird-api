@@ -71,6 +71,9 @@ export class UserService {
   public async create(dto: Partial<User>): Promise<User> {
     console.log('creating', dto);
     try {
+      if (!dto.username) {
+        dto.username = `${dto.firstName} ${dto.lastName}`;
+      }
       const user = await this.userRepository.save(dto);
       this.sendWelcomeEmail(user);
       return user;
@@ -86,12 +89,12 @@ export class UserService {
     if (dto.password) {
       dto.password = await this.hashPassword(dto.password);
     }
-
+    console.log('user id', id);
     try {
       await this.userRepository.update(id, dto);
       return this.findOne(id);
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(e);
     }
   }
 
@@ -118,11 +121,16 @@ export class UserService {
     const user = await this.findOne({ where: { id: userId } });
     const mission = await this.findOne({ where: { id: missionId } });
     if (user) {
-      const userMission = new UserMission();
-      userMission.status = 'COMPLETED';
-      userMission.missionId = missionId;
-      userMission.userId = userId;
-      user.userMissions = [...user.userMissions, userMission];
+      const userMissions = user.userMissions;
+      console.log('userMissions', userMissions);
+
+      const userMission = {
+        status: 'COMPLETED',
+        missionId,
+        userId,
+      } as UserMission;
+
+      user.userMissions = [];
     }
     return this.userRepository.save(user);
     return 1;

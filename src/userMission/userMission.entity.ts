@@ -16,7 +16,9 @@ export class UserMission {
   @Column()
   public status: string;
 
-  @ManyToOne((type) => User, (user) => user.userMissions)
+  @ManyToOne((type) => User, (user) => user.userMissions, {
+    onDelete: 'CASCADE',
+  })
   public user!: User;
 
   @ManyToOne((type) => Mission, (mission) => mission.userMissions)

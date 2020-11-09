@@ -44,6 +44,18 @@ export class BrandController {
     return brand;
   }
 
+  @Get('slug/:slug')
+  @ApiOperation({
+    summary: 'Get brand by slug',
+    description: 'Retrieves a brand record by slug',
+  })
+  async findBySlug(@Param('slug') slug: string) {
+    slug = slug.toLowerCase();
+    const brand = await this.brandService.findOne({ where: { slug } });
+    if (!brand) throw new NotFoundException();
+    return brand;
+  }
+
   @Post()
   @ApiOperation({
     summary: 'Create brand',
@@ -54,7 +66,10 @@ export class BrandController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update brand', description: 'Update a brand record' })
+  @ApiOperation({
+    summary: 'Update brand',
+    description: 'Update a brand record',
+  })
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: BrandUpdateDto,
@@ -63,7 +78,10 @@ export class BrandController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete brand', description: 'Delete a brand record' })
+  @ApiOperation({
+    summary: 'Delete brand',
+    description: 'Delete a brand record',
+  })
   async remove(@Param('id', ParseIntPipe) id: number) {
     return await this.brandService.remove(id);
   }

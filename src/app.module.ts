@@ -16,7 +16,6 @@ import { CrudCommand } from './crud/crud.command';
 import { CrudModule } from './crud/crud.module';
 import { InstagramModule } from './instagram/instagram.module';
 import { MissionModule } from './mission/mission.module';
-import { MockService } from './mock/mock.service';
 import { SubscriberModule } from './subscriber/subscriber.module';
 import { UserCommand } from './user/user.command';
 import { UserModule } from './user/user.module';
@@ -58,6 +57,6 @@ import { UserModule } from './user/user.module';
     SubscriberModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserCommand, CrudCommand, MockService],
+  providers: [AppService, UserCommand, CrudCommand],
 })
 export class AppModule {}

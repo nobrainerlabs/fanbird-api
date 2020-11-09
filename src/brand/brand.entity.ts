@@ -1,3 +1,4 @@
+import { Mission } from './../mission/mission.entity';
 import { User } from './../user/user.entity';
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import {
@@ -5,6 +6,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -22,11 +24,17 @@ export class Brand {
   @Column()
   name: string;
 
+  @Column()
+  slug: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt: Date;
+
+  @OneToMany((type) => Mission, (mission) => mission.brand, { eager: true })
+  public missions?: Mission[];
 }
 
 export class BrandCreateDto {

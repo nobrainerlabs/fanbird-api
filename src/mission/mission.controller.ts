@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   Request,
   UnauthorizedException,
@@ -29,8 +30,16 @@ export class MissionController {
     summary: 'Get missions',
     description: 'Retrieve a list of missions',
   })
-  async findAll(@Body() data) {
-    return this.missionService.findAll(data);
+  async findAll(@Query('brandId') brandId?: number) {
+    const opts = {
+      where: {
+        brandId: undefined,
+      },
+    };
+    if (brandId) {
+      opts.where.brandId = brandId;
+    }
+    return this.missionService.findAll(opts);
   }
 
   @Get(':id')

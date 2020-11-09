@@ -23,19 +23,8 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Roles('admin', '$owner')
-  @Post(':id([0-9]+|me)/mission')
-  public async completeMission(
-    @Body() dto,
-    @Param('id', ParseIntPipe) id: number | string,
-    @Req() req,
-  ) {
-    id = id === 'me' ? req.user.id : id;
-    return this.userService.completeMission(Number(id), dto.missionId);
-  }
-
   @Get()
-  // @Roles('admin')
+  @Roles('admin')
   @ApiOperation({
     summary: 'Get users',
     description: 'Retrieve a list of users',
@@ -53,6 +42,15 @@ export class UserController {
       throw new NotFoundException();
     }
     return user;
+  }
+
+  @Post(':id/missions/:missionId')
+  public async completeMission(
+    @Param('id') id: number,
+    @Param('missionId') missionId: number,
+    @Req() req,
+  ) {
+    return this.userService.completeMission(Number(id), missionId);
   }
 
   @Post()
@@ -73,6 +71,7 @@ export class UserController {
     @Req() req,
   ): Promise<User> {
     id = id === 'me' ? req.user.id : id;
+    console.log('dto', dto);
     return await this.userService.update(id as number, dto);
   }
 

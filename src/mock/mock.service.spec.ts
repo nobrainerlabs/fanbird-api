@@ -1,3 +1,4 @@
+import { BrandService } from './../brand/brand.service';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AppModule } from '../app.module';
@@ -7,6 +8,7 @@ import { UserService } from '../user/user.service';
 describe('Mock initial data', () => {
   let userService: UserService;
   let missionService: MissionService;
+  let brandService: BrandService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -14,16 +16,14 @@ describe('Mock initial data', () => {
     }).compile();
     userService = module.get<UserService>(UserService);
     missionService = module.get<MissionService>(MissionService);
+    brandService = module.get<BrandService>(BrandService);
   });
 
   it('should create user', async () => {
-    const users = [
-      { email: 'user@test.com', password: 'asdfasdf' },
-      { email: 'user2@test.com', password: 'asdfasdf' },
-    ];
+    const { users } = require('./samples/users');
     try {
       for (const user of users) {
-        // const newUser = await userService.create(user);
+        const newUser = await userService.register(user);
       }
     } catch (err) {
       console.error('error', err);
@@ -31,11 +31,10 @@ describe('Mock initial data', () => {
   });
 
   it('should create brands', async () => {
-    const { missions } = require('./samples/brands');
-
+    const { brands } = require('./samples/brands');
     try {
-      for (const mission of missions) {
-        const newMission = await missionService.create(mission);
+      for (const brand of brands) {
+        const newBrand = await brandService.create(brand);
       }
     } catch (err) {
       console.error('err', err);
@@ -44,7 +43,6 @@ describe('Mock initial data', () => {
 
   it('should create missions', async () => {
     const { missions } = require('./samples/missions');
-
     try {
       for (const mission of missions) {
         const newMission = await missionService.create(mission);

@@ -45,6 +45,9 @@ export class User {
   points: number;
 
   @Column({ nullable: true })
+  username?: string;
+
+  @Column({ nullable: true })
   firstName?: string;
 
   @Column({ nullable: true })
@@ -83,6 +86,7 @@ export class User {
 
   @OneToMany((type) => UserMission, (userMission) => userMission.user, {
     cascade: true,
+    eager: true,
   })
   public userMissions?: UserMission[];
 }
@@ -97,6 +101,7 @@ export class UserRegisterDto {
   password: string;
 
   source?: UserSource;
+  username?: string;
   firstName?: string;
   lastName?: string;
   street1?: string;

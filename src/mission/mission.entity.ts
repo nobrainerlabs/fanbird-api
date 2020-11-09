@@ -1,3 +1,4 @@
+import { Brand } from './../brand/brand.entity';
 import { UserMission } from './../userMission/userMission.entity';
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import {
@@ -6,6 +7,7 @@ import {
   DeleteDateColumn,
   Entity,
   OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -16,6 +18,9 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Mission {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  brandId: number;
 
   @Column()
   name: string;
@@ -40,6 +45,9 @@ export class Mission {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt: Date;
+
+  @ManyToOne((type) => Brand, (brand) => brand.missions)
+  public brand?: Brand;
 
   @OneToMany((type) => UserMission, (userMission) => userMission.mission)
   public userMissions?: UserMission[];
