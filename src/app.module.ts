@@ -1,7 +1,3 @@
-import { MockService } from './mock/mock.service';
-import { SubscriberModule } from './subscriber/subscriber.module';
-import { InstagramModule } from './instagram/crud.module';
-import { MissionModule } from './mission/mission.module';
 import { AccessControlModule } from 'nest-access-control';
 import { CommandModule } from 'nestjs-command';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
@@ -15,8 +11,13 @@ import { AppController } from './app.controller';
 import { roles } from './app.roles';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { BrandModule } from './brand/brand.module';
 import { CrudCommand } from './crud/crud.command';
 import { CrudModule } from './crud/crud.module';
+import { InstagramModule } from './instagram/instagram.module';
+import { MissionModule } from './mission/mission.module';
+import { MockService } from './mock/mock.service';
+import { SubscriberModule } from './subscriber/subscriber.module';
 import { UserCommand } from './user/user.command';
 import { UserModule } from './user/user.module';
 
@@ -33,7 +34,7 @@ import { UserModule } from './user/user.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [__dirname + '/**/*.entity{.ts}'],
+      entities: [__dirname + '/**/*.entity{.ts|.js}'],
       synchronize: true,
       logging: true,
       autoLoadEntities: true,
@@ -53,6 +54,7 @@ import { UserModule } from './user/user.module';
     CrudModule,
     MissionModule,
     InstagramModule,
+    BrandModule,
     SubscriberModule,
   ],
   controllers: [AppController],

@@ -55,9 +55,15 @@ export class InstagramController {
   @Get('hunt')
   async hunt(
     @Query('userId') userId: string,
+    @Query('missionId') missionId: number,
     @Query('accessToken') accessToken: string,
     @Query('mention') mention: string,
   ) {
-    return await this.instagramService.hunt(userId, accessToken, mention);
+    const found = await this.instagramService.hunt(
+      userId,
+      missionId,
+      accessToken,
+      mention,
+    );
   }
 }

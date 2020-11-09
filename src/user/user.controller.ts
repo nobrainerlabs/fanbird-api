@@ -12,6 +12,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { identity } from 'rxjs';
 
 import { Roles } from '../auth/decorators/roles.decorator';
 import { User, UserRegisterDto, UserUpdateDto } from './user.entity';
@@ -22,8 +23,19 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Roles('admin', '$owner')
+  @Post(':id([0-9]+|me)/mission')
+  public async completeMission(
+    @Body() dto,
+    @Param('id', ParseIntPipe) id: number | string,
+    @Req() req,
+  ) {
+    id = id === 'me' ? req.user.id : id;
+    return this.userService.completeMission(Number(id), dto.missionId);
+  }
+
   @Get()
-  @Roles('admin')
+  // @Roles('admin')
   @ApiOperation({
     summary: 'Get users',
     description: 'Retrieve a list of users',
@@ -83,7 +95,6 @@ export class UserController {
     if (!user) {
       return { found: 0 };
     }
-
     return { found: 1, source: user.source };
   }
 }

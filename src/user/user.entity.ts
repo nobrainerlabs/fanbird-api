@@ -1,9 +1,11 @@
+import { UserMission } from './../userMission/userMission.entity';
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -38,6 +40,9 @@ export class User {
 
   @Column({ nullable: true })
   password?: string;
+
+  @Column({ type: 'int', default: 0 })
+  points: number;
 
   @Column({ nullable: true })
   firstName?: string;
@@ -75,6 +80,11 @@ export class User {
   @Column('timestamptz', { nullable: true })
   @IsOptional()
   lastLoginAt?: Date;
+
+  @OneToMany((type) => UserMission, (userMission) => userMission.user, {
+    cascade: true,
+  })
+  public userMissions?: UserMission[];
 }
 
 export class UserRegisterDto {

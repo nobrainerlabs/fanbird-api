@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { FindOneOptions, Repository } from 'typeorm';
 import * as express from 'express';
 import * as qs from 'qs';
@@ -16,7 +17,10 @@ import {
 
 @Injectable()
 export class InstagramService {
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    private userService: UserService,
+  ) {}
 
   async getCode(response: express.Response, params) {
     const state = 'something';
@@ -69,7 +73,7 @@ export class InstagramService {
     }
   }
 
-  async hunt(userId, accessToken, mention) {
+  async hunt(userId, missionId, accessToken, mention) {
     const url = `https://graph.instagram.com/${userId}/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=${accessToken}`;
     console.log('hitting url', userId, accessToken, url);
     try {
@@ -81,6 +85,9 @@ export class InstagramService {
           return comment.includes(mention.toLowerCase());
         }
       });
+      if (found) {
+        await this.userService.completeMission(userId, missionId);
+      }
       return { found };
     } catch (err) {
       console.log('there was error', err.message);

@@ -1,9 +1,11 @@
+import { UserMission } from './../userMission/userMission.entity';
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -38,6 +40,9 @@ export class Mission {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt: Date;
+
+  @OneToMany((type) => UserMission, (userMission) => userMission.mission)
+  public userMissions?: UserMission[];
 }
 
 export class MissionCreateDto {
