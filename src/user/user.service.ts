@@ -122,6 +122,10 @@ export class UserService {
     return user;
   }
 
+  async whoami() {
+    return 'i am the greatest';
+  }
+
   private async hashPassword(password: string) {
     return await bcrypt.hash(password, 14);
   }

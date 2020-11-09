@@ -1,6 +1,7 @@
 export const missions = [
   {
     id: 1,
+    brandId: 1,
     type: 'instagram',
     name: 'Lounge with us',
     description: 'Show us how you lounge at home with MeUndies.',
@@ -31,6 +32,7 @@ export const missions = [
   },
   {
     id: 2,
+    brandId: 1,
     type: 'instagram',
     name: 'Matching Pairs',
     description: 'Show us your better half, in matching pairs!',
@@ -57,10 +59,11 @@ export const missions = [
         },
       ],
     },
-    points: 500,
+    points: 1000,
   },
   {
     id: 3,
+    brandId: 1,
     type: 'instagram',
     name: 'Prints, Prints, Prints!',
     description: 'Show off your favorite pair of prints from MeUndies',
@@ -87,10 +90,11 @@ export const missions = [
         },
       ],
     },
-    points: 500,
+    points: 1500,
   },
   {
     id: 4,
+    brandId: 1,
     type: 'instagram',
     name: 'Strike a pose',
     description: 'Let us see you strike a pose, rocking MeUndies',
@@ -112,7 +116,7 @@ export const missions = [
         },
       ],
     },
-    points: 500,
+    points: 2500,
   },
   // {
   //   id: 3,
