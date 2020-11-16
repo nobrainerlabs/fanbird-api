@@ -73,12 +73,11 @@ export class InstagramService {
     }
   }
 
-  async hunt(userId, missionId, accessToken, mention) {
-    const url = `https://graph.instagram.com/${userId}/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=${accessToken}`;
-    console.log('hitting url', userId, accessToken, url);
+  async hunt(userId, instagramUserId, missionId, accessToken, mention) {
+    const url = `https://graph.instagram.com/${instagramUserId}/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=${accessToken}`;
+
     try {
       const res = await this.httpService.get(url).toPromise();
-      console.log('the res', res.data);
       const found = res.data.data.find((post) => {
         if (post && post.caption) {
           const comment = post.caption.toLowerCase();
@@ -86,9 +85,14 @@ export class InstagramService {
         }
       });
       if (found) {
-        await this.userService.completeMission(userId, missionId);
+        await this.userService.completeMission(
+          Number(userId),
+          Number(missionId),
+        );
+        return { found };
       }
-      return { found };
+
+      throw new NotFoundException();
     } catch (err) {
       console.log('there was error', err.message);
       throw new InternalServerErrorException(err);

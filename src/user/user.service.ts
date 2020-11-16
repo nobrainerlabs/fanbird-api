@@ -1,3 +1,5 @@
+import { UserMissionService } from './../userMission/userMission.service';
+import { MissionService } from './../mission/mission.service';
 import * as bcrypt from 'bcrypt';
 import { FindOneOptions, Repository } from 'typeorm';
 
@@ -28,6 +30,8 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private mailerService: MailerService,
+    private missionService: MissionService,
+    private userMissionService: UserMissionService,
   ) {}
 
   async findAll(opts?): Promise<User[]> {
@@ -119,21 +123,37 @@ export class UserService {
 
   async completeMission(userId: number, missionId: number) {
     const user = await this.findOne({ where: { id: userId } });
-    const mission = await this.findOne({ where: { id: missionId } });
-    if (user) {
-      const userMissions = user.userMissions;
-      console.log('userMissions', userMissions);
+    const mission = await this.missionService.findOne({
+      where: { id: missionId },
+    });
+    console.log('mission', mission);
 
-      const userMission = {
+    if (!user) {
+      console.log('user not found!');
+    }
+
+    if (!mission) {
+      console.log('mission not found!');
+    }
+    console.log('prev user', user);
+    console.log('mission points', mission.points);
+
+    if (user) {
+      const userMissionPayload = {
         status: 'COMPLETED',
         missionId,
         userId,
       } as UserMission;
-
-      user.userMissions = [];
+      const userMission = await this.userMissionService.create(
+        userMissionPayload,
+      );
+      await this.userRepository.update(user.id, {
+        points: user.points + mission.points,
+      });
+      return this.findOne({ where: { id: user.id } });
     }
-    return this.userRepository.save(user);
-    return 1;
+
+    throw new InternalServerErrorException();
   }
 
   /**
