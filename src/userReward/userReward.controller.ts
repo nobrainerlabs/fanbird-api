@@ -1,3 +1,4 @@
+import { UtilityService } from './../utility/utility.service';
 import {
   Body,
   Controller,
@@ -26,7 +27,10 @@ import { UserRewardService } from './userReward.service';
 
 @Controller('userRewards')
 export class UserRewardController {
-  constructor(private userRewardService: UserRewardService) {}
+  constructor(
+    private userRewardService: UserRewardService,
+    private utilityService: UtilityService,
+  ) {}
 
   @Roles('$authenticated')
   @Get()
@@ -35,6 +39,9 @@ export class UserRewardController {
     description: 'Retrieve a list of userRewards',
   })
   async findAll(@Query() dto: UserRewardFindAllDto, @Req() request) {
+    if (!this.utilityService.hasRole('admin', request.user)) {
+      dto.userId = request.user.id;
+    }
     if (request.user?.id !== dto.userId) {
       throw new ForbiddenException();
     }

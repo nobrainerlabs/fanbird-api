@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { FindOneOptions, Repository } from 'typeorm';
 
 import {
@@ -7,6 +8,8 @@ import {
   Logger,
   NotFoundException,
   UnauthorizedException,
+  forwardRef,
+  Inject,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -21,6 +24,8 @@ export class UserRewardService {
   constructor(
     @InjectRepository(UserReward)
     private userRewardRepository: Repository<UserReward>,
+    @Inject(forwardRef(() => UserService))
+    private userService: UserService,
   ) {}
 
   async findAll(opts?): Promise<UserReward[]> {
@@ -41,7 +46,13 @@ export class UserRewardService {
 
   async create(dto: UserRewardCreateDto): Promise<UserReward> {
     try {
-      return this.userRewardRepository.save(dto);
+      const res = await this.userRewardRepository.save(dto);
+      const userReward = await this.findOne(res.id);
+      await this.userService.deductPoints(
+        userReward.userId,
+        userReward.reward.points,
+      );
+      return userReward;
     } catch (e) {
       if (e.code === '23505') {
         throw new ConflictException();

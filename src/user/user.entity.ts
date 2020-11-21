@@ -91,10 +91,7 @@ export class User {
   })
   public userMissions?: UserMission[];
 
-  @OneToMany((type) => UserReward, (userReward) => userReward.user, {
-    cascade: true,
-    eager: true,
-  })
+  @OneToMany((type) => UserReward, (userReward) => userReward.user)
   public userRewards?: UserReward[];
 }
 

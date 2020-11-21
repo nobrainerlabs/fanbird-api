@@ -31,10 +31,10 @@ export class UserReward {
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt: Date;
 
-  @ManyToOne((type) => User, (user) => user.userRewards)
+  @ManyToOne((type) => User, (user) => user.userRewards, { eager: true })
   public user!: User;
 
-  @ManyToOne((type) => Reward, (reward) => reward.userRewards)
+  @ManyToOne((type) => Reward, (reward) => reward.userRewards, { eager: true })
   public reward!: Reward;
 }
 
@@ -52,7 +52,7 @@ export class UserRewardUpdateDto {
 }
 
 export class UserRewardFindAllDto {
-  @IsNotEmpty()
+  @IsOptional()
   @Transform((value) => Number(value))
-  userId: number;
+  userId?: number;
 }

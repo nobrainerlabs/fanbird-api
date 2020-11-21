@@ -10,13 +10,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   Request,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 
-import { Reward, RewardUpdateDto, RewardCreateDto } from './reward.entity';
+import {
+  Reward,
+  RewardUpdateDto,
+  RewardCreateDto,
+  RewardFindAllDto,
+} from './reward.entity';
 import { RewardService } from './reward.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
@@ -29,8 +35,13 @@ export class RewardController {
     summary: 'Get rewards',
     description: 'Retrieve a list of rewards',
   })
-  async findAll(@Body() data) {
-    return this.rewardService.findAll(data);
+  async findAll(@Query() dto: RewardFindAllDto) {
+    const opts = {
+      where: {
+        brandId: dto.brandId,
+      },
+    };
+    return this.rewardService.findAll(opts);
   }
 
   @Get(':id')
@@ -54,7 +65,10 @@ export class RewardController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update reward', description: 'Update a reward record' })
+  @ApiOperation({
+    summary: 'Update reward',
+    description: 'Update a reward record',
+  })
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: RewardUpdateDto,
@@ -63,7 +77,10 @@ export class RewardController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete reward', description: 'Delete a reward record' })
+  @ApiOperation({
+    summary: 'Delete reward',
+    description: 'Delete a reward record',
+  })
   async remove(@Param('id', ParseIntPipe) id: number) {
     return await this.rewardService.remove(id);
   }

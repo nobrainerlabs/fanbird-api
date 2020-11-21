@@ -1,8 +1,3 @@
-import { UserMissionService } from './../userMission/userMission.service';
-import { MissionService } from './../mission/mission.service';
-import * as bcrypt from 'bcrypt';
-import { FindOneOptions, Repository } from 'typeorm';
-
 import { MailerService } from '@nestjs-modules/mailer';
 import {
   ConflictException,
@@ -13,16 +8,18 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
+import { Repository } from 'typeorm';
 
+import { UserMission } from '../userMission/userMission.entity';
+import { MissionService } from './../mission/mission.service';
+import { UserMissionService } from './../userMission/userMission.service';
 import {
   User,
-  UserRegisterDto,
-  UserSsoGoogleDto,
   UserLoginDto,
+  UserRegisterDto,
   UserUpdateDto,
-  UserSource,
 } from './user.entity';
-import { UserMission } from '../userMission/userMission.entity';
 
 @Injectable()
 export class UserService {
@@ -147,9 +144,7 @@ export class UserService {
       const userMission = await this.userMissionService.create(
         userMissionPayload,
       );
-      await this.userRepository.update(user.id, {
-        points: user.points + mission.points,
-      });
+      await this.addPoints(user.id, mission.points);
       return this.findOne({ where: { id: user.id } });
     }
 
@@ -171,5 +166,21 @@ export class UserService {
 
   private async hashPassword(password: string) {
     return await bcrypt.hash(password, 14);
+  }
+
+  async addPoints(userId: number, points: number) {
+    const user = await this.findOne(userId);
+    const newPoints = user.points + points;
+    return await this.userRepository.update(user.id, {
+      points: newPoints,
+    });
+  }
+
+  async deductPoints(userId: number, points: number) {
+    const user = await this.findOne(userId);
+    const newPoints = user.points - points;
+    return await this.userRepository.update(user.id, {
+      points: newPoints,
+    });
   }
 }

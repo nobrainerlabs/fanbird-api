@@ -1,3 +1,4 @@
+import { UtilityModule } from './utility/utility.module';
 import { UserRewardModule } from './userReward/userReward.module';
 import { RewardModule } from './reward/reward.module';
 import { AccessControlModule } from 'nest-access-control';
@@ -59,6 +60,7 @@ import { UserModule } from './user/user.module';
     SubscriberModule,
     RewardModule,
     UserRewardModule,
+    UtilityModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserCommand, CrudCommand],

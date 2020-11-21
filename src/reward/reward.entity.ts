@@ -46,7 +46,7 @@ export class Reward {
   type: RewardType;
 
   @Column({ type: 'jsonb', default: {} })
-  reward: object;
+  meta: object;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -85,4 +85,9 @@ export class RewardUpdateDto {
   type?: RewardType;
   description?: string;
   expireAt?: Date;
+}
+
+export class RewardFindAllDto {
+  @IsNotEmpty()
+  brandId: number;
 }

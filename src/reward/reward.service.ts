@@ -1,9 +1,12 @@
-
 import { FindOneOptions, Repository } from 'typeorm';
 
 import {
-    ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException,
-    UnauthorizedException
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
