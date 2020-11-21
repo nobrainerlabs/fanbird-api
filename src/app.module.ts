@@ -1,3 +1,5 @@
+import { UserRewardModule } from './userReward/userReward.module';
+import { RewardModule } from './reward/reward.module';
 import { AccessControlModule } from 'nest-access-control';
 import { CommandModule } from 'nestjs-command';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
@@ -55,6 +57,8 @@ import { UserModule } from './user/user.module';
     InstagramModule,
     BrandModule,
     SubscriberModule,
+    RewardModule,
+    UserRewardModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserCommand, CrudCommand],

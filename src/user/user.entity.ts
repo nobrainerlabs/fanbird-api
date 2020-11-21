@@ -1,3 +1,4 @@
+import { UserReward } from './../userReward/userReward.entity';
 import { UserMission } from './../userMission/userMission.entity';
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import {
@@ -89,6 +90,12 @@ export class User {
     eager: true,
   })
   public userMissions?: UserMission[];
+
+  @OneToMany((type) => UserReward, (userReward) => userReward.user, {
+    cascade: true,
+    eager: true,
+  })
+  public userRewards?: UserReward[];
 }
 
 export class UserRegisterDto {
