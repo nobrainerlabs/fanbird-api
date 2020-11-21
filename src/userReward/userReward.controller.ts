@@ -73,7 +73,7 @@ export class UserRewardController {
     description: 'Creates a userReward record',
   })
   async create(@Body() dto: UserRewardCreateDto): Promise<UserReward> {
-    return await this.userRewardService.create(dto);
+    return this.userRewardService.create(dto);
   }
 
   @Patch(':id')

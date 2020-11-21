@@ -1,3 +1,4 @@
+import { RewardModule } from './../reward/reward.module';
 import { User } from './../user/user.entity';
 import { UserModule } from './../user/user.module';
 import { forwardRef, Module } from '@nestjs/common';
@@ -11,6 +12,7 @@ import { UserRewardService } from './userReward.service';
   imports: [
     TypeOrmModule.forFeature([UserReward, User]),
     forwardRef(() => UserModule),
+    RewardModule,
   ],
   exports: [TypeOrmModule, UserRewardService],
   controllers: [UserRewardController],

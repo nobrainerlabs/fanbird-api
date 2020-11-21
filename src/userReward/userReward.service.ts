@@ -1,3 +1,4 @@
+import { RewardService } from './../reward/reward.service';
 import { UserService } from './../user/user.service';
 import { FindOneOptions, Repository } from 'typeorm';
 
@@ -10,6 +11,8 @@ import {
   UnauthorizedException,
   forwardRef,
   Inject,
+  BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -26,6 +29,7 @@ export class UserRewardService {
     private userRewardRepository: Repository<UserReward>,
     @Inject(forwardRef(() => UserService))
     private userService: UserService,
+    private rewardService: RewardService,
   ) {}
 
   async findAll(opts?): Promise<UserReward[]> {
@@ -45,20 +49,20 @@ export class UserRewardService {
   }
 
   async create(dto: UserRewardCreateDto): Promise<UserReward> {
-    try {
-      const res = await this.userRewardRepository.save(dto);
-      const userReward = await this.findOne(res.id);
-      await this.userService.deductPoints(
-        userReward.userId,
-        userReward.reward.points,
-      );
-      return userReward;
-    } catch (e) {
-      if (e.code === '23505') {
-        throw new ConflictException();
-      }
-      throw new InternalServerErrorException();
+    const reward = await this.rewardService.findOne(dto.rewardId);
+    const user = await this.userService.findOne(dto.userId);
+
+    if (user.points < reward.points) {
+      throw new BadRequestException('insufficient points');
     }
+
+    const res = await this.userRewardRepository.save(dto);
+    const userReward = await this.findOne(res.id);
+    await this.userService.deductPoints(
+      userReward.userId,
+      userReward.reward.points,
+    );
+    return userReward;
   }
 
   async update(id: number, dto: UserRewardUpdateDto): Promise<UserReward> {
