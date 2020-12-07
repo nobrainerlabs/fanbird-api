@@ -62,7 +62,7 @@ export class BrandController {
     description: 'Creates a brand record',
   })
   async create(@Body() dto: BrandCreateDto): Promise<Brand> {
-    return await this.brandService.create(dto);
+    return this.brandService.create(dto);
   }
 
   @Patch(':id')
@@ -74,7 +74,8 @@ export class BrandController {
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: BrandUpdateDto,
   ): Promise<Brand> {
-    return await this.brandService.update(id, dto);
+    console.log('id', id);
+    return this.brandService.update(id, dto);
   }
 
   @Delete(':id')

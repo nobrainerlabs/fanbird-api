@@ -1,9 +1,12 @@
-
 import { FindOneOptions, Repository } from 'typeorm';
 
 import {
-    ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException,
-    UnauthorizedException
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -48,7 +51,7 @@ export class BrandService {
       await this.brandRepository.update(id, dto);
       return this.findOne(id);
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(e);
     }
   }
 }

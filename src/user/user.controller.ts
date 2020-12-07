@@ -6,7 +6,6 @@ import {
   Get,
   NotFoundException,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -67,7 +66,7 @@ export class UserController {
   @Roles('admin', '$owner')
   @ApiOperation({ summary: 'Update user', description: 'Update a user record' })
   async update(
-    @Param('id', ParseIntPipe) id: number | string,
+    @Param('id') id: number | string,
     @Body() dto: UserUpdateDto,
     @Req() req,
   ): Promise<User> {
@@ -79,7 +78,7 @@ export class UserController {
   @Delete(':id([0-9]+|me)')
   @Roles('admin', '$owner')
   @ApiOperation({ summary: 'Delete user', description: 'Delete a user record' })
-  async remove(@Param('id', ParseIntPipe) id: number | string, @Req() req) {
+  async remove(@Param('id') id: number | string, @Req() req) {
     id = id === 'me' ? req.user.id : id;
     return await this.userService.remove(id as number);
   }

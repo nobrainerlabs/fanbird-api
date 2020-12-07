@@ -24,6 +24,9 @@ export class Brand {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  picture?: string;
+
   @Column()
   slug: string;
 
@@ -45,4 +48,7 @@ export class BrandCreateDto {
 export class BrandUpdateDto {
   @IsOptional()
   name?: string;
+
+  @IsOptional()
+  picture?: string;
 }
