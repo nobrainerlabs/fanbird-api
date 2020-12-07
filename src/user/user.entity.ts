@@ -123,7 +123,6 @@ export class UserUpdateDto {
   email?: string;
 
   @IsOptional()
-  @MinLength(8)
   password?: string;
 
   firstName?: string;
