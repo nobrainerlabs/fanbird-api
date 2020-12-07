@@ -31,6 +31,9 @@ export class Mission {
   @Column()
   type: string;
 
+  @Column({ nullable: true })
+  picture?: string;
+
   @Column({ type: 'int', default: 0 })
   points: number;
 

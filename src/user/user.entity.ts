@@ -75,6 +75,16 @@ export class User {
   @Column({ nullable: true })
   picture?: string;
 
+  @Column('jsonb', {
+    default: {
+      plan: '',
+      notifications: {
+        newUser: false,
+      },
+    },
+  })
+  settings: {};
+
   @CreateDateColumn()
   createdAt: Date;
 

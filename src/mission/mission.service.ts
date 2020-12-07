@@ -51,7 +51,7 @@ export class MissionService {
       await this.missionRepository.update(id, dto);
       return this.findOne(id);
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(e);
     }
   }
 }

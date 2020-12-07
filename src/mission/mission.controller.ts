@@ -71,7 +71,7 @@ export class MissionController {
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: MissionUpdateDto,
   ): Promise<Mission> {
-    return await this.missionService.update(id, dto);
+    return this.missionService.update(id, dto);
   }
 
   @Delete(':id')
